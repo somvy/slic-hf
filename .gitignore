@@ -4,3 +4,4 @@ models
 __pycache__
 .DS_Store
 .idea
+.ipynb_checkpoints

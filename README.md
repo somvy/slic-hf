@@ -1,4 +1,9 @@
-## setup
+Repository contains experiments on [paper](https://arxiv.org/abs/2309.16240) "Beyond Reverse KL: Generalizing Direct Preference Optimization with Diverse Divergence Constraints"
+The paper compares different divergences for direct preference optimization (DPO) and proposes a new one - $\alpha$-divergence.
+
+Results notebook - [results.ipynb on nbviewer](https://nbviewer.org/github/somvy/slic-hf/blob/main/results.ipynb)
+
+## Setup
 
 Install [poetry](https://python-poetry.org/docs/)
 
@@ -9,7 +14,15 @@ wandb login
 huggingface-cli login
 ```
 
-### dataset
+## Dataset
+
+
+
+повозился с конфигом, для 600 промптов сгенерил по 6 сэмплов, поскорил, собрал в пары (top1, top4\5\6) и (top1\2\3, top6)
+Получилось по 6 пар с каждой генерации, итого 3600 пар. Поделил на трейн и тест в соотношении 0.2
+
+Resulting dataset - [link](https://huggingface.co/datasets/therem/dpo_dataset)
+Randomly selected 50 prompts for eval generation - [link](https://huggingface.co/datasets/therem/dpo_dataset_eval)
 
 Use mine, or generate your own by
 
@@ -19,9 +32,9 @@ set -a && source .env && poetry run python dataset/main.py
 
 after generation change datasets paths in config.py
 
-#### train
+## Train
 
-1. Specify training arguments, dpo_trainer params and run_name in train_dpo/train.py
+1. Specify training arguments, DPOTrainer params and run_name in train_dpo/train.py
 2. Run
 
 ```
@@ -35,17 +48,7 @@ set -a && source .env && poetry run python train_dpo/train.py
 set -a && source .env && poetry run python train_dpo/generate.py
 ```
 
-## Данные
-
-повозился с конфигом, для 600 промптов сгенерил по 6 сэмплов, поскорил, собрал в пары (top1, top4\5\6) и (
-top1\2\3, top6)
-Получилось по 6 пар с каждой генерации, итого 3600 пар. Поделил на трейн и тест в соотношении 0.2
-
-Итого - [link](https://huggingface.co/datasets/therem/dpo_dataset)
-Еще оставил 50 промптов, чтобы оценивать
-генерацию - [link](https://huggingface.co/datasets/therem/dpo_dataset_eval)
-
-### Веса и логи
+### Weights and logs
 
 |                        Loss |                             Weights                             |                     Wandb Report                      |
 |----------------------------:|:---------------------------------------------------------------:|:-----------------------------------------------------:|
@@ -73,7 +76,8 @@ top1\2\3, top6)
 |   $\alpha = 0.7, \beta = 1$ |  [link](https://huggingface.co/therem/gpt_imdb_alpha07_beta1)   |
 | $\alpha = 0.7, \beta = 0.1$ | [link](https://huggingface.co/therem/gpt_imdb_alpha07_beta1e-1) |
 
-lr для hinge, sigmoid - 1e-4, им норм на валидации
+**lr**
 
-jsd, alpha, fkl же жестко оверфитились, понизил до 1e-5
+* hinge, sigmoid - 1e-4
+* jsd, alpha, fkl -  1e-5
 
