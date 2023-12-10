@@ -1998,6 +1998,41 @@ dynamo = ["jinja2"]
 opt-einsum = ["opt-einsum (>=3.3)"]
 
 [[package]]
+name = "torch"
+version = "2.1.1+cu118"
+description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
+optional = false
+python-versions = ">=3.8.0"
+files = [
+    {file = "torch-2.1.1+cu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:8e2914484e74aeba08570a52c8057cc5d59c19b72a623a6ded29dc9b988151c0"},
+    {file = "torch-2.1.1+cu118-cp310-cp310-win_amd64.whl", hash = "sha256:765e93911984c813ddf74427eecd70c1efc785af7c231777632954b1bd1429d3"},
+    {file = "torch-2.1.1+cu118-cp311-cp311-linux_x86_64.whl", hash = "sha256:f3c0ba02b50d0021ff26f030e22d4c45965537cf91f322e52a65b8c58396f81c"},
+    {file = "torch-2.1.1+cu118-cp311-cp311-win_amd64.whl", hash = "sha256:d99be44487d3ed0f7e6ef5d6689a37fb4a2f2821a9e7b59e7e04002a876a667a"},
+    {file = "torch-2.1.1+cu118-cp38-cp38-linux_x86_64.whl", hash = "sha256:686e94d9b1ce1e18766ee2ec4b35fbd3912124cfbd4207cb757cf9eedb39f3f7"},
+    {file = "torch-2.1.1+cu118-cp38-cp38-win_amd64.whl", hash = "sha256:43e72fc0043f47dfd85ba5326653a9d3dc173e1348108d75beb09d9483537233"},
+    {file = "torch-2.1.1+cu118-cp39-cp39-linux_x86_64.whl", hash = "sha256:ef6b03bd3ec6a12c5baf50b6c178f94ed48cbcbaafee66e8273f65f41a773e7c"},
+    {file = "torch-2.1.1+cu118-cp39-cp39-win_amd64.whl", hash = "sha256:c883a237149b3435af3b4f544f990dc946c428fd531a9d14be0407ee2112b581"},
+]
+
+[package.dependencies]
+filelock = "*"
+fsspec = "*"
+jinja2 = "*"
+networkx = "*"
+sympy = "*"
+triton = "2.1.0"
+typing-extensions = "*"
+
+[package.extras]
+dynamo = ["jinja2"]
+opt-einsum = ["opt-einsum (>=3.3)"]
+
+[package.source]
+type = "legacy"
+url = "https://download.pytorch.org/whl/cu118"
+reference = "pytorch"
+
+[[package]]
 name = "tqdm"
 version = "4.66.1"
 description = "Fast, Extensible Progress Meter"
@@ -2457,4 +2492,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "34e448ba920f5ee317e9048718699833323ea2e63a83400dd348193da6d7ca9f"
+content-hash = "ef9a6e73636183eb842bbba48b7cb5011569f1e5b1fa896cfe3d0d364bac0d5a"
