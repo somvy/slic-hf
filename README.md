@@ -1,11 +1,15 @@
-Repository contains experiments on [paper](https://arxiv.org/abs/2309.16240) "Beyond Reverse KL: Generalizing Direct Preference Optimization with Diverse Divergence Constraints"
-The paper compares different divergences for direct preference optimization (DPO) and proposes a new one - $\alpha$-divergence.
+Reproducing results of [paper](https://arxiv.org/abs/2309.16240) - "Beyond Reverse KL: Generalizing
+Direct Preference Optimization with Diverse Divergence Constraints"
 
-Results notebook - [results.ipynb on nbviewer](https://nbviewer.org/github/somvy/slic-hf/blob/main/results.ipynb)
+The paper compares different divergence functions for direct preference optimization (DPO).
+
+Results notebook on
+nbviewer - [results.ipynb](https://nbviewer.org/github/somvy/slic-hf/blob/main/results.ipynb)
 
 ## Setup
 
-Install [poetry](https://python-poetry.org/docs/)
+1. Install [poetry](https://python-poetry.org/docs/)
+2. Then run:
 
 ```
 git clone https://github.com/somvy/slic-hf && cd slic-hf
@@ -13,18 +17,23 @@ poetry install && poetry shell
 wandb login
 huggingface-cli login
 ```
+3. Specify your HuggingFace username, desired SFT model in config.py
+
 
 ## Dataset
+Prompts - first sentences from movie reviews.
+Used some hacks to generate answers with positive bias (see dataset/generation_config.py)
+Used diverse beam search decoding with diversity penalty 50 to generate 6 answers per prompt.
+Then scored them with reward model. Used pairs of (top1, top4\5\6) 
+and (top1\2\3, top6) as chosen and rejected answers (total 6 pairs from generation).
+Final dataset - 3600 pairs, test size 0.2.
 
+[hf link](https://huggingface.co/datasets/therem/dpo_dataset)
 
+Also randomly selected 50 prompts for eval
+generation - [hf link](https://huggingface.co/datasets/therem/dpo_dataset_eval)
 
-повозился с конфигом, для 600 промптов сгенерил по 6 сэмплов, поскорил, собрал в пары (top1, top4\5\6) и (top1\2\3, top6)
-Получилось по 6 пар с каждой генерации, итого 3600 пар. Поделил на трейн и тест в соотношении 0.2
-
-Resulting dataset - [link](https://huggingface.co/datasets/therem/dpo_dataset)
-Randomly selected 50 prompts for eval generation - [link](https://huggingface.co/datasets/therem/dpo_dataset_eval)
-
-Use mine, or generate your own by
+Use this dataset, or generate your own by
 
 ```
 set -a && source .env && poetry run python dataset/main.py
@@ -48,7 +57,13 @@ set -a && source .env && poetry run python train_dpo/train.py
 set -a && source .env && poetry run python train_dpo/generate.py
 ```
 
-### Weights and logs
+## Experiments setup
+
+Trained GPT2 finetuned on IMDB reviews.  
+3 epochs, batch size 4, lr 1e-4 for sigmoid and hinge, 1e-5 for others.
+
+
+## Weights and logs
 
 |                        Loss |                             Weights                             |                     Wandb Report                      |
 |----------------------------:|:---------------------------------------------------------------:|:-----------------------------------------------------:|
@@ -76,8 +91,4 @@ set -a && source .env && poetry run python train_dpo/generate.py
 |   $\alpha = 0.7, \beta = 1$ |  [link](https://huggingface.co/therem/gpt_imdb_alpha07_beta1)   |
 | $\alpha = 0.7, \beta = 0.1$ | [link](https://huggingface.co/therem/gpt_imdb_alpha07_beta1e-1) |
 
-**lr**
-
-* hinge, sigmoid - 1e-4
-* jsd, alpha, fkl -  1e-5
 
